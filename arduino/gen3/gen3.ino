@@ -33,6 +33,12 @@ void loop() {
     }
     if (inByte == '+') {
       instructions[stepCount] = atol(stepBlock);
+
+      Serial.print(stepCount + 1);
+      Serial.print(F(": "));
+      Serial.print(F("Step value: "));
+      Serial.println(atol(stepBlock));
+      
       clearCharArray(stepBlock, MAX_STEP_LENGTH);
       position = 0;
       stepCount++;
@@ -40,18 +46,25 @@ void loop() {
   }
   else 
   {
+    Serial.print(F("Selected Game: "));
     switch (instructions[0]) {
       case 0:
+        Serial.print(F("FRLG"));
+        Serial.print('\n');
         frlgLoop(instructions);
         break;
       case 1:
+        Serial.print(F("RSE"));
+        Serial.print('\n');
         emeraldLoop(instructions);
         break;
       default:
+        Serial.println(F("Unknown"));
         break;
     }
     clearLongArray(instructions, MAX_STEPS);
     stepCount = 0;
+    Serial.println(F("Done."));
   }
 }
 

@@ -142,7 +142,7 @@ void sweetScentSeq() {
     {200, A_PRESS},
     {2000, DOWN_PRESS},
     {200, A_PRESS},
-    {200, DOWN_PRESS}
+    {200, DOWN_PRESS},
   };
   int length = ARRAY_SIZE(SWEET_SCENT);
   processButtonDelay(SWEET_SCENT, length);
@@ -210,31 +210,49 @@ void emeraldLoop(unsigned long *seq) {
   unsigned long startTimer = micros();
 
   if (seq[5]){
+    Serial.println(F("Beginning live battery sequence..."));
     liveBatterySeq();
   }
   else {
+    Serial.println(F("Beginning dead battery sequence..."));
     deadBatterySeq();
   }
 
+  Serial.println(F("Loading into game..."));
   delay(LOAD_INTO_GAME_MS);
 
-  if (seq[1])
+  if (seq[1]) {
+    Serial.println(F("Commencing battle record..."));
     doBattleRecord();
+  }
 
-  if (seq[4] != NULL)
+  if (seq[4] != NULL){
     selectSeqRse(seq[4])();
-  else 
+    Serial.println(F("Mode is not NULL: "));
+    Serial.print((uintptr_t)seq[4], HEX);
+    Serial.print('\n');
+  }
+  else {
+    Serial.println(F("Mode is NULL"));
     openPin(A_PRESS);
+  }
 
   unsigned long endTimer = micros();
   unsigned long delt = (endTimer - startTimer) / 1000;
-  unsigned long remainder = seq[3] - delt;
- 
-  if (delt < 0)
-    return;
+  Serial.print(F("Waiting to start encounter: "));
+  Serial.print(delt);
+  Serial.println(F(" "));
 
-  if (remainder > seq[3])
+  if (delt < 0) {
+    Serial.println(F("Error... Total time was shorter than expected "));
     return;
+  }
+  unsigned long remainder = seq[3] - delt;
+  Serial.println(F(" "));
+  if (remainder > seq[3]) {
+    Serial.println(F("Error... Total time was shorter than expected"));
+    return;
+  }
 
   delay(remainder);
   openPin(A_PRESS);

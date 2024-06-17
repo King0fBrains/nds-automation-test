@@ -35,10 +35,16 @@ void rebootConsole() {
 
 void processButtonDelay(ButtonDelay * bd, unsigned int steps) {
   for (int i = 0; i < steps; i++) {
-    unsigned int del = bd[i].delay
-    if (del) 
-      delay(del);
-      
+    
+    if (bd[i].delay) {
+      Serial.print(F("Delaying for: "));
+      Serial.print(bd[i].delay);
+      Serial.println(F(" "));
+      delay(bd[i].delay);
+    }
+    Serial.print(F("Pressing: "));
+    Serial.print(bd[i].button);
+    Serial.println(F(" "));
     openPin(bd[i].button);
   }
 }

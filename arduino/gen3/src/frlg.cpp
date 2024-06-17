@@ -195,26 +195,33 @@ void teachyTV(unsigned long timer) {
 
   if (waitTime < 0) 
     return
-
+    
+  Serial.println(waitTime);
   delay(waitTime);
   openPin(B_PRESS);
   delay(1000);
 }
 
 void frlgLoop(unsigned long *seq) {
-  if (seq[1])
+  if (seq[1]){
     digitalWrite(SELECT_PRESS, HIGH);
-  
+    Serial.println(F("Holding select..."));
+  }
+
   unsigned long startTimer = micros();
-  openPin(A_PRESS);
-  delay(seq[2]);
+  Serial.println(F("Waiting thru intro timer..."));
+    openPin(A_PRESS);
+    delay(seq[2]);
 
-  digitalWrite(seq[5], HIGH);
-  delay(WAIT_FOR_SAV_MENU);
+  Serial.println(F("Intro complete..."));
+    digitalWrite(seq[5], HIGH);
+    delay(WAIT_FOR_SAV_MENU);
 
-  if (seq[1])
-    digitalWrite(SELECT_PRESS, LOW);
-  
+  if (seq[1]){
+    Serial.println(F("Select released...")); 
+      digitalWrite(SELECT_PRESS, LOW);
+  }
+
   digitalWrite(seq[5], LOW);
   delay(60);
   openPin(A_PRESS);
@@ -222,19 +229,31 @@ void frlgLoop(unsigned long *seq) {
   openPin(B_PRESS);
   delay(LOAD_INTO_GAME_MS);
 
+  Serial.println(F("Loaded into game..."));
   if (seq[6] > 0)
     teachyTV(seq[6]);
   
-  if (seq[4] != 0)
+  if (seq[4] != 0){
+    Serial.print(F("Mode is not NULL: 0x"));
+    Serial.print((uintptr_t)seq[4], HEX);
+    Serial.println(F(" "));
     selectSeqFrlg(seq[4])();
-  else 
+  }
+  else {
+    Serial.println(F("Mode is NULL"));
     openPin(A_PRESS);
-  
+  }
+
   unsigned long endTimer = micros();
   unsigned long delt = (endTimer - startTimer) / 1000;
+  Serial.print(F("Waiting to start encounter: "));
+  Serial.print(delt);
+  Serial.print('\n');
 
-  if (delt < 0) 
+  if (delt < 0) {
+    Serial.println(F("Error... Total time was shorter than expected"));
     return;
+  }
 
   delay(seq[3] - delt);
   openPin(A_PRESS);
