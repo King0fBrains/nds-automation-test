@@ -20,7 +20,7 @@ void loop() {
   static unsigned long instructions[MAX_STEPS];
   static unsigned int stepCount = 0;
 
-  static unsigned char stepBlock[MAX_STEP_LENGTH];
+  static char stepBlock[MAX_STEP_LENGTH];
   static unsigned int position = 0;
 
   char inByte = Serial.read();
