@@ -165,6 +165,52 @@ porygonSeq() {
   processButtonDelay(PORYGON_GC_SEQ, length);
 }
 
+/*
+  * This assumes that you are standing in front of a PC
+  * And that when you open Bill's PC to *move* Pokemon
+  * The corrupted Pokemon is already hovered over in the box
+*/
+void 
+performGrabACE() {
+  ButtonDelay GRAB_ACE[] = {
+    {0, A_PRESS},
+    {1592, A_PRESS},
+    {1592, A_PRESS},
+    {1173, A_PRESS},
+    {1844, DOWN_PRESS},
+    {200, DOWN_PRESS},
+    {200, A_PRESS},
+    {2850, A_PRESS},
+    {200, A_PRESS},
+    {200, LEFT_PRESS},
+    {800, A_PRESS},
+    {200, B_PRESS},
+    {4526, B_PRESS},
+    {200, B_PRESS},
+    {200, B_PRESS}
+  };
+  int length = ARRAY_SIZE(GRAB_ACE);
+  processButtonDelay(GRAB_ACE, length);
+}
+
+/*
+  * Simple function that just opens up the trainer card
+  * Assumes player is standing in the overworld and is able
+  * to open the main start menu
+*/
+void
+checkTrainerCard() {
+  ButtonDelay CHECK_TID[] = {
+    {0, START_PRESS},
+    {200, DOWN_PRESS},
+    {200, DOWN_PRESS},
+    {200, DOWN_PRESS},
+    {200, A_PRESS}
+  };
+  int length = ARRAY_SIZE(CHECK_TID);
+  processButtonDelay(CHECK_TID, length);
+}
+
 typedef void (*SeqPtr)();
 
 SeqPtr selectSeqFrlg(int mode) {
@@ -200,23 +246,6 @@ SeqPtr selectSeqFrlg(int mode) {
 }
 
 static unsigned long loopTimer = 0;
-
-void 
-teachyTV(unsigned long timer) {
-  unsigned long startTimer = millis();
-  openPin(SELECT_PRESS);
-  waitMicroseconds(MS_UL(1200));
-  unsigned long endTimer = millis();
-  unsigned long waitTime = timer - (endTimer - startTimer);
-
-  if (waitTime < 0) 
-    return;
-    
-  Serial.println(waitTime);
-  delay(waitTime);
-  openPin(B_PRESS);
-  waitMicroseconds(MS_UL(1000));
-}
 
 /*
   * Simple sequence of button presses and delays
@@ -262,6 +291,29 @@ introLoop(int button, int select, unsigned long timer) {
 
   menuToGame();
 }
+
+/*
+  * Function performs opening the Teachy TV
+  * and then waiting inside the TV screen for a specified amount of time
+  * Assumes that the TV is registered key item
+*/
+void 
+teachyTV(unsigned long timer) {
+  unsigned long startTimer = millis();
+  openPin(SELECT_PRESS);
+  waitMicroseconds(MS_UL(1200));
+  unsigned long endTimer = millis();
+  unsigned long waitTime = timer - (endTimer - startTimer);
+
+  if (waitTime < 0) 
+    return;
+    
+  Serial.println(waitTime);
+  delay(waitTime);
+  openPin(B_PRESS);
+  waitMicroseconds(MS_UL(1000));
+}
+
 /*
   * Function for preforming RNG sequence
   * Based on user input, a sequence for getting into an encounter is seleceted
@@ -297,4 +349,26 @@ frlgLoop(unsigned long *seq) {
 
   loopTimer = 0;
   openPin(A_PRESS);
+}
+
+/*
+  * Performs and intro loop sequence with user input
+  * Once loaded into the game, performs a grab ACE code
+  * for changing the TID to the intro seed
+  * Opens up the trainer card then waits for 10 seconds 
+  * for camera to capture the value
+  * Reboots the console to reset the seed and start again
+*/
+void
+seedChecker(unsigned long *seq) {
+  introLoop(seq[5], seq[1], seq[2]);
+  performGrabACE();
+
+  waitMilliseconds(500);
+
+  checkTrainerCard();
+
+  waitMilliseconds(10000);
+
+  rebootConsole();
 }
