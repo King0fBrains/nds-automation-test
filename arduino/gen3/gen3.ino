@@ -58,6 +58,10 @@ void loop() {
         Serial.print('\n');
         emeraldLoop(instructions);
         break;
+      case 2:
+        Serial.println(F("FRLG Seed Checker"));
+        Serial.println(F(" "));
+        seedChecker(instructions);
       default:
         Serial.println(F("Unknown"));
         break;
