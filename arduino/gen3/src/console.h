@@ -22,6 +22,7 @@ typedef struct {
 void openPin(unsigned int pin);
 void softResetGameNDS();
 void processButtonDelay(ButtonDelay *bd, unsigned int steps);
+void rebootConsole();
 
 void waitMicroseconds(unsigned long duration);
 void waitMilliseconds(unsigned long duration);
