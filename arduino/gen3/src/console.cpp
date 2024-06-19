@@ -1,6 +1,5 @@
 #include "console.h"
 
-
 void waitMicroseconds(unsigned long duration) {
   unsigned long start = micros();
   while ((micros() - start) < duration) {
@@ -20,7 +19,7 @@ void openPin(unsigned int pin) {
 }
 
 void softResetGameNDS() {
-  unsigned int RESET[4] = {2, 3, 12, 13};
+  unsigned int RESET[4] = {A_PRESS, B_PRESS, SELECT_PRESS, START_PRESS};
   for (int i = 0; i < 4; i++) {
     digitalWrite(RESET[i], HIGH);
   }
@@ -44,7 +43,6 @@ void rebootConsole() {
 
   digitalWrite(POWER_PIN, LOW);
   waitMicroseconds(MS_UL(100));
-
 }
 
 void processButtonDelay(ButtonDelay * bd, unsigned int steps) {
