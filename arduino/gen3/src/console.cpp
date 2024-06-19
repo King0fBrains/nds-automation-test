@@ -1,10 +1,21 @@
 #include "console.h"
 
-#define POWER_PIN 14
+
+void waitMicroseconds(unsigned long duration) {
+  unsigned long start = micros();
+  while ((micros() - start) < duration) {
+  }
+}
+
+void waitMilliseconds(unsigned long duration) {
+  unsigned long start = micros();
+  while ((micros() - start) < duration) {
+  }
+}
 
 void openPin(unsigned int pin) {
   digitalWrite(pin, HIGH);
-  delay(59);
+  waitMicroseconds(MS_UL(59));
   digitalWrite(pin, LOW);
 }
 
@@ -14,7 +25,7 @@ void softResetGameNDS() {
     digitalWrite(RESET[i], HIGH);
   }
 
-  delay(250);
+  waitMicroseconds(MS_UL(250));
 
   for (int i = 0; i < 4; i++) {
       digitalWrite(RESET[i], LOW);
@@ -23,14 +34,17 @@ void softResetGameNDS() {
 
 void rebootConsole() {
   digitalWrite(POWER_PIN, HIGH);
-  delay(1000);
-  digitalWrite(POWER_PIN, LOW);
-  delay(100);
+  waitMicroseconds(MS_UL(1000));
 
-  digitalWrite(POWER_PIN, HIGH);
-  delay(1000);
   digitalWrite(POWER_PIN, LOW);
-  delay(100);
+  waitMicroseconds(MS_UL(100));
+  
+  digitalWrite(POWER_PIN, HIGH);
+  waitMicroseconds(MS_UL(1000));
+
+  digitalWrite(POWER_PIN, LOW);
+  waitMicroseconds(MS_UL(100));
+
 }
 
 void processButtonDelay(ButtonDelay * bd, unsigned int steps) {
@@ -40,7 +54,7 @@ void processButtonDelay(ButtonDelay * bd, unsigned int steps) {
       Serial.print(F("Delaying for: "));
       Serial.print(bd[i].delay);
       Serial.println(F(" "));
-      delay(bd[i].delay);
+      waitMicroseconds(MS_UL(bd[i].delay));
     }
     Serial.print(F("Pressing: "));
     Serial.print(bd[i].button);
