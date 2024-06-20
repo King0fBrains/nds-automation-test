@@ -177,17 +177,23 @@ performGrabACE() {
     {1592, A_PRESS},
     {1592, A_PRESS},
     {1173, A_PRESS},
+    {1000, A_PRESS},
     {1844, DOWN_PRESS},
     {200, DOWN_PRESS},
     {200, A_PRESS},
     {2850, A_PRESS},
     {200, A_PRESS},
-    {200, LEFT_PRESS},
+    {800, RIGHT_PRESS},
     {800, A_PRESS},
-    {200, B_PRESS},
+    {800, A_PRESS},
+    {800, LEFT_PRESS},
+    {800, A_PRESS},
+    {800, A_PRESS},
+    {800, B_PRESS},
+    {800, B_PRESS},
     {4526, B_PRESS},
-    {200, B_PRESS},
-    {200, B_PRESS}
+    {600, B_PRESS},
+    {600, B_PRESS}
   };
   int length = ARRAY_SIZE(GRAB_ACE);
   processButtonDelay(GRAB_ACE, length);
@@ -361,6 +367,8 @@ frlgLoop(unsigned long *seq) {
 */
 void
 seedChecker(unsigned long *seq) {
+  loopTimer = loopTimer ? 0 : loopTimer;
+
   introLoop(seq[5], seq[1], seq[2]);
   performGrabACE();
 
