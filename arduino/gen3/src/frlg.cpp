@@ -254,6 +254,18 @@ SeqPtr selectSeqFrlg(int mode) {
 static unsigned long loopTimer = 0;
 
 /*
+  * Reboots the console then waits 10 seconds
+  * Presses A to get to main menu, waits 3 seconds
+*/
+void 
+getToDSMenuFromReboot() {
+  rebootConsole();
+  waitMilliseconds(10000);
+  openPin(A_PRESS);
+  waitMilliseconds(3000);
+}
+
+/*
   * Simple sequence of button presses and delays
   * Meant to just get us from the save selection menu into the game
   * Selects save, skips recap, that's it
@@ -367,6 +379,7 @@ frlgLoop(unsigned long *seq) {
 */
 void
 seedChecker(unsigned long *seq) {
+  getToDSMenuFromReboot();
   loopTimer = loopTimer ? 0 : loopTimer;
 
   introLoop(seq[5], seq[1], seq[2]);
