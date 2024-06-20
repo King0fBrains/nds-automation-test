@@ -7,8 +7,8 @@ void waitMicroseconds(unsigned long duration) {
 }
 
 void waitMilliseconds(unsigned long duration) {
-  unsigned long start = micros();
-  while ((micros() - start) < duration) {
+  unsigned long start = millis();
+  while ((millis() - start) < duration) {
   }
 }
 
