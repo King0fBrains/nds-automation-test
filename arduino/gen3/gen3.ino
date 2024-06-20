@@ -46,22 +46,20 @@ void loop() {
   }
   else 
   {
-    Serial.print(F("Selected Game: "));
+    Serial.print(F("Mode: "));
     switch (instructions[0]) {
       case 0:
-        Serial.print(F("FRLG"));
-        Serial.print('\n');
+        Serial.println(F("FRLG RNG"));
         frlgLoop(instructions);
         break;
       case 1:
-        Serial.print(F("RSE"));
-        Serial.print('\n');
+        Serial.println(F("RSE RNG"));
         emeraldLoop(instructions);
         break;
       case 2:
         Serial.println(F("FRLG Seed Checker"));
-        Serial.println(F(" "));
         seedChecker(instructions);
+        break;
       default:
         Serial.println(F("Unknown"));
         break;
