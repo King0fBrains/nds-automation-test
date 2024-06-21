@@ -36,13 +36,13 @@ void rebootConsole() {
   waitMicroseconds(MS_UL(1000));
 
   digitalWrite(POWER_PIN, LOW);
-  waitMicroseconds(MS_UL(100));
+  waitMicroseconds(MS_UL(1000));
   
   digitalWrite(POWER_PIN, HIGH);
   waitMicroseconds(MS_UL(1000));
 
   digitalWrite(POWER_PIN, LOW);
-  waitMicroseconds(MS_UL(100));
+  waitMicroseconds(MS_UL(1000));
 }
 
 void processButtonDelay(ButtonDelay * bd, unsigned int steps) {

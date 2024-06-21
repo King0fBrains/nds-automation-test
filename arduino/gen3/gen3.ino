@@ -11,7 +11,7 @@ void clearCharArray(char *pArr, int len);
 
 void setup() {
   Serial.begin(BAUD_RATE);
-  for (int i = 2; i < 14; i++) {
+  for (int i = 2; i <= 14; i++) {
     pinMode(i, OUTPUT);
   }
 }

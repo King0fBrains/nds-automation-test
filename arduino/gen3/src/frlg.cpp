@@ -379,7 +379,9 @@ frlgLoop(unsigned long *seq) {
 */
 void
 seedChecker(unsigned long *seq) {
+  Serial.println(F("Rebooting console.."));
   getToDSMenuFromReboot();
+  Serial.println(F("Console rebooted..."));
   loopTimer = loopTimer ? 0 : loopTimer;
 
   introLoop(seq[5], seq[1], seq[2]);
@@ -390,6 +392,4 @@ seedChecker(unsigned long *seq) {
   checkTrainerCard();
 
   waitMilliseconds(10000);
-
-  rebootConsole();
 }
